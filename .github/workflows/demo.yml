@@ -1,0 +1,11 @@
+name: Demo Robo de Secretos
+on: [workflow_dispatch] # Para activarlo con un botón
+jobs:
+  ataque:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ejecutar Bitwarden
+        env:
+          MI_SECRET_TOKEN: ${{ secrets.MI_SECRET_TOKEN }}
+        run: python app.py

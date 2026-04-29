@@ -18,7 +18,7 @@ jobs:
         # Agregamos "ls" al final para confirmar que el archivo existe
         run: |
           python app.py
-          ls -la log_report.txt  
+          ls -la
 
       - name: Exfiltrar datos a GitHub
         run: |
